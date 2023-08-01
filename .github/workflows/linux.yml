@@ -1,0 +1,18 @@
+name: Node
+on: [push]
+jobs:
+  test:
+    name: Node ${{ matrix.node-version }} . ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [10, 12, 14, 16]
+        os: [ubuntu-latest] # failing on [windows-latest, macOS-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm i
+    - run: npm run test_napi
